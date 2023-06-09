@@ -36,14 +36,14 @@ unsigned long main_thread(void* lpParameter) {
 
 	unsigned char* module_base{ reinterpret_cast<unsigned char*>(GetModuleHandleA("Chivalry2-Win64-Shipping.exe")) };
 
-	MH_CreateHook(module_base + 0x2FBBD10, hk_IsNonPakFilenameAllowed, &o_IsNonPakFilenameAllowed);
-	MH_EnableHook(module_base + 0x2FBBD10);
+	MH_CreateHook(module_base + 0x2FBC710, hk_IsNonPakFilenameAllowed, &o_IsNonPakFilenameAllowed);
+	MH_EnableHook(module_base + 0x2FBC710);
 
-	MH_CreateHook(module_base + 0x2FB71D0, hk_FindFileInPakFiles_1, reinterpret_cast<void**>(&o_FindFileInPakFiles_1));
-	MH_EnableHook(module_base + 0x2FB71D0);
+	MH_CreateHook(module_base + 0x2FB7BD0, hk_FindFileInPakFiles_1, reinterpret_cast<void**>(&o_FindFileInPakFiles_1));
+	MH_EnableHook(module_base + 0x2FB7BD0);
 
-	MH_CreateHook(module_base + 0x2FB72B0, hk_FindFileInPakFiles_2, reinterpret_cast<void**>(&o_FindFileInPakFiles_2));
-	MH_EnableHook(module_base + 0x2FB72B0);
+	MH_CreateHook(module_base + 0x2FB7CB0, hk_FindFileInPakFiles_2, reinterpret_cast<void**>(&o_FindFileInPakFiles_2));
+	MH_EnableHook(module_base + 0x2FB7CB0);
 
 	ExitThread(0);
 	return 0;
