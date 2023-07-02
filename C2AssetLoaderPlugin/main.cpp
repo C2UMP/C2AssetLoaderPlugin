@@ -7,11 +7,11 @@ typedef long long(*FindFileInPakFiles_1_t)(void*, const wchar_t*, void**, void*)
 FindFileInPakFiles_1_t o_FindFileInPakFiles_1;
 FindFileInPakFiles_1_t o_FindFileInPakFiles_2;
 
-long long hk_IsNonPakFilenameAllowed(void* this_ptr, void* InFilename) {
+long long hk_IsNonPakFilenameAllowed(void* this_ptr, void* InFilename) { // 48 89 5C 24 ? 48 89 6C 24 ? 56 57 41 56 48 83 EC 30 48 8B F1 45 33 C0 48 8D 4C 24 ? 4C 8B F2 
 	return 1;
 }
 
-long long hk_FindFileInPakFiles_1(void* this_ptr, const wchar_t* Filename, void** OutPakFile, void* OutEntry) {
+long long hk_FindFileInPakFiles_1(void* this_ptr, const wchar_t* Filename, void** OutPakFile, void* OutEntry) { // 48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 54 41 55 41 56 41 57 48 83 EC 30 33 FF 
 	auto attr{ GetFileAttributesW(Filename) };
 	if (attr != INVALID_FILE_ATTRIBUTES && Filename && wcsstr(Filename, L"../../../")) {
 		if (OutPakFile) OutPakFile = nullptr;
@@ -21,7 +21,7 @@ long long hk_FindFileInPakFiles_1(void* this_ptr, const wchar_t* Filename, void*
 	return o_FindFileInPakFiles_1(this_ptr, Filename, OutPakFile, OutEntry);
 }
 
-long long hk_FindFileInPakFiles_2(void* this_ptr, const wchar_t* Filename, void** OutPakFile, void* OutEntry) {
+long long hk_FindFileInPakFiles_2(void* this_ptr, const wchar_t* Filename, void** OutPakFile, void* OutEntry) { // Next function under FindFileInPakFiles_1
 	auto attr{ GetFileAttributesW(Filename) };
 	if (attr != INVALID_FILE_ATTRIBUTES && Filename && wcsstr(Filename, L"../../../")) {
 		if (OutPakFile) OutPakFile = nullptr;
@@ -36,14 +36,14 @@ unsigned long main_thread(void* lpParameter) {
 
 	unsigned char* module_base{ reinterpret_cast<unsigned char*>(GetModuleHandleA("Chivalry2-Win64-Shipping.exe")) };
 
-	MH_CreateHook(module_base + 0x2FBC710, hk_IsNonPakFilenameAllowed, &o_IsNonPakFilenameAllowed);
-	MH_EnableHook(module_base + 0x2FBC710);
+	MH_CreateHook(module_base + 0x2FC3CE0, hk_IsNonPakFilenameAllowed, &o_IsNonPakFilenameAllowed);
+	MH_EnableHook(module_base + 0x2FC3CE0);
 
-	MH_CreateHook(module_base + 0x2FB7BD0, hk_FindFileInPakFiles_1, reinterpret_cast<void**>(&o_FindFileInPakFiles_1));
-	MH_EnableHook(module_base + 0x2FB7BD0);
+	MH_CreateHook(module_base + 0x2FBF1A0, hk_FindFileInPakFiles_1, reinterpret_cast<void**>(&o_FindFileInPakFiles_1));
+	MH_EnableHook(module_base + 0x2FBF1A0);
 
-	MH_CreateHook(module_base + 0x2FB7CB0, hk_FindFileInPakFiles_2, reinterpret_cast<void**>(&o_FindFileInPakFiles_2));
-	MH_EnableHook(module_base + 0x2FB7CB0);
+	MH_CreateHook(module_base + 0x2FBF280, hk_FindFileInPakFiles_2, reinterpret_cast<void**>(&o_FindFileInPakFiles_2));
+	MH_EnableHook(module_base + 0x2FBF280);
 
 	ExitThread(0);
 	return 0;
